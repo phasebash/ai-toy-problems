@@ -1,0 +1,29 @@
+{
+  "name": "ai-toy-problems",
+  "version": "1.0.0",
+  "description": "A collection of artificial intelligence toy problems solved with simple JavaScriptz.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/core/*-test.js",
+    "pretest": "jshint src && jscs src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phasebash/ai-toy-problems.git"
+  },
+  "author": "Brandon Zeeb",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/phasebash/ai-toy-problems/issues"
+  },
+  "homepage": "https://github.com/phasebash/ai-toy-problems#readme",
+  "dependencies": {
+    "jscs": "^2.9.0"
+  },
+  "devDependencies": {
+    "jshint": "2.9.1",
+    "chai": "3.5.0",
+    "mocha": "2.4.5",
+    "sinon": "1.17.3"
+  }
+}
