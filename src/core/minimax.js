@@ -17,8 +17,8 @@ class Minimax {
     return {};
   }
 
-  maxValue(/*state*/) {
-    return 0;
+  maxValue(state) {
+    return state;
   }
 
   minValue(state) {
@@ -26,7 +26,17 @@ class Minimax {
       return action(null, this._utilityFn(state));
     }
 
-    return { action: {}, utility: {} };
+    var v = action({}, {});
+
+    /*
+    this._actionFn(state).forEach((action) => {
+      const next = this._transitionFn(state, action);
+
+      v = min(v, this.maxValue(next));
+    });
+    */
+
+    return v;
   }
 
 }

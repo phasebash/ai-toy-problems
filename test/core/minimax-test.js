@@ -27,8 +27,7 @@ describe('minimax', () => {
     });
 
   });
-
-  describe('minValue function contracts', () => {
+describe('minValue function contracts', () => {
 
     var minimax,
         actionFn,
@@ -36,15 +35,22 @@ describe('minimax', () => {
         terminationFn,
         utilityFn,
 
+        action,
+        actionName,
+
         state;
 
     beforeEach(() => {
+      actionFn = sinon.expectation.create('actionFn');
+      transitionFn = sinon.expectation.create('terminationFn');
       terminationFn = sinon.expectation.create('terminatonFn');
       utilityFn = sinon.expectation.create('utilityFn');
 
       minimax = new Minimax(actionFn, transitionFn, terminationFn, utilityFn);
       
       state = {};
+      actionName = "charge forward!";
+      action = { action: actionName, utility: 100 };
     });
 
     it('should provide a minValue function', () => {
@@ -71,6 +77,48 @@ describe('minimax', () => {
 
       terminationFn.verify();
       utilityFn.verify();
+    });
+
+/*
+    it('should select the minimum of all maximized opponent states', () => {
+      const spy = sinon.spy(minimax, 'maxValue');
+
+      actionFn.withArgs(state).returns([actionName]);
+      transitionFn.withArgs(action).returns(action)
+
+      expect(minimax.minValue(state)).to.equal(state);
+
+      sinon.assert.calledWith(spy, action);
+
+      actionFn.verify();
+      transitionFn.verify();
+    });
+    */
+
+  });
+
+
+  describe('maxValue function contracts', () => {
+
+    var minimax,
+        actionFn,
+        transitionFn,
+        terminationFn,
+        utilityFn,
+
+        state;
+
+    beforeEach(() => {
+      terminationFn = sinon.expectation.create('terminatonFn');
+      utilityFn = sinon.expectation.create('utilityFn');
+
+      minimax = new Minimax(actionFn, transitionFn, terminationFn, utilityFn);
+      
+      state = {};
+    });
+
+    it('should return given state as max state since it is not yet implemented', () => {
+      expect(minimax.maxValue(state)).to.equal(state);
     });
 
   });
