@@ -31,107 +31,112 @@ describe('minimax', () => {
 
   });
 
-  describe('minValue function contracts', () => {
+  describe('support functions', () => {
 
-    function actionsReturns(actions) {
-      stateMock.expects('actions').returns(actions);
-    }
+    describe('minValue function contracts', () => {
 
-    var minimax,
-      actionApi,
-      action,
+      function actionsReturns(actions) {
+        stateMock.expects('actions').returns(actions);
+      }
 
-      state,
-      minState, maxState,
-      minAction, maxAction,
+      var minimax,
+        actionApi,
+        action,
 
-      stateMock,
-      minStateMock, maxStateMock,
-      minActionMock, maxActionMock;
+        state,
+        minState, maxState,
+        minAction, maxAction,
 
-    beforeEach(() => {
-      minimax = new Minimax();
+        stateMock,
+        minStateMock, maxStateMock,
+        minActionMock, maxActionMock;
 
-      state = new StateInterface('root state');
-      minState = new StateInterface('minimum child');
-      maxState = new StateInterface('maximum child');
-      minAction = new ActionInterface();
-      maxAction = new ActionInterface();
+      beforeEach(() => {
+        minimax = new Minimax();
 
-      stateMock = sinon.mock(state);
-      minStateMock = sinon.mock(minState);
-      maxStateMock = sinon.mock(maxState);
-      minActionMock = sinon.mock(minAction);
-      maxActionMock = sinon.mock(maxAction);
+        state = new StateInterface('root state');
+        minState = new StateInterface('minimum child');
+        maxState = new StateInterface('maximum child');
+        minAction = new ActionInterface();
+        maxAction = new ActionInterface();
 
-      minStateMock.expects('utility').atLeast(1).returns(1);
-      maxStateMock.expects('utility').atLeast(1).returns(100);
+        stateMock = sinon.mock(state);
+        minStateMock = sinon.mock(minState);
+        maxStateMock = sinon.mock(maxState);
+        minActionMock = sinon.mock(minAction);
+        maxActionMock = sinon.mock(maxAction);
+
+        minStateMock.expects('utility').atLeast(1).returns(1);
+        maxStateMock.expects('utility').atLeast(1).returns(100);
+      });
+
+      it('should provide a minValue function', () => {
+        assert.typeOf(minimax.minValue, 'function');
+      });
+
+      it('should return a terminal action when a terminal state is detected', () => {
+        actionsReturns([]);
+
+        expect(minimax.minValue(state)).to.equal(state);
+
+        stateMock.verify();
+      });
+
+      function makeActionWithTargetState(state) {
+        const action     = new ActionInterface();
+        const actionMock = sinon.mock(action);
+        actionMock.expects('apply').returns(state);
+
+
+        return actionMock;
+      }
+
+      it('should select the minimum of all maximized opponent states', () => {
+        minActionMock.expects('apply').returns(minState);
+        maxActionMock.expects('apply').returns(maxState);
+
+        actionsReturns([maxAction, minAction]);
+
+        expect(minimax.minValue(state)).to.equal(minState);
+
+        minActionMock.verify();
+        maxActionMock.verify();
+        stateMock.verify();
+        minStateMock.verify();
+        maxStateMock.verify();
+      });
+
     });
 
-    it('should provide a minValue function', () => {
-      assert.typeOf(minimax.minValue, 'function');
-    });
+    describe('maxValue function contracts', () => {
 
-    it('should return a terminal action when a terminal state is detected', () => {
-      actionsReturns([]);
+      var minimax,
+        actionApi,
+        action,
+        actionName,
 
-      expect(minimax.minValue(state)).to.equal(state);
+        state, stateMock;
 
-      stateMock.verify();
-    });
+      beforeEach(() => {
+        minimax = new Minimax();
 
-    function makeActionWithTargetState(state) {
-      const action     = new ActionInterface();
-      const actionMock = sinon.mock(action);
-      actionMock.expects('apply').returns(state);
+        state = new StateInterface();
 
+        stateMock = sinon.mock(state);
 
-      return actionMock;
-    }
+        stateMock.expects('actions').returns([]);
+        stateMock.expects('utility').returns(100);
+      });
 
-    it('should select the minimum of all maximized opponent states', () => {
-      minActionMock.expects('apply').returns(minState);
-      maxActionMock.expects('apply').returns(maxState);
+      it('should return given state as max state since it is not yet implemented', () => {
+        expect(minimax.maxValue(state)).to.equal(state);
+      });
 
-      actionsReturns([maxAction, minAction]);
-
-      expect(minimax.minValue(state)).to.equal(minState);
-
-      minActionMock.verify();
-      maxActionMock.verify();
-      stateMock.verify();
-      minStateMock.verify();
-      maxStateMock.verify();
     });
 
   });
 
 
-  describe('maxValue function contracts', () => {
-
-    var minimax,
-      actionApi,
-      action,
-      actionName,
-
-      state, stateMock;
-
-    beforeEach(() => {
-      minimax = new Minimax();
-
-      state = new StateInterface();
-
-      stateMock = sinon.mock(state);
-
-      stateMock.expects('actions').returns([]);
-      stateMock.expects('utility').returns(100);
-    });
-
-    it('should return given state as max state since it is not yet implemented', () => {
-      expect(minimax.maxValue(state)).to.equal(state);
-    });
-
-  });
 
   describe('construction', () => {
 
