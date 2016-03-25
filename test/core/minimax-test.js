@@ -33,12 +33,6 @@ describe('minimax', () => {
 
   describe('support functions', () => {
 
-    describe('minValue function contracts', () => {
-
-      function actionsReturns(actions) {
-        stateMock.expects('actions').returns(actions);
-      }
-
       var minimax,
         actionApi,
         action,
@@ -69,6 +63,13 @@ describe('minimax', () => {
         minStateMock.expects('utility').atLeast(1).returns(1);
         maxStateMock.expects('utility').atLeast(1).returns(100);
       });
+
+      function actionsReturns(actions) {
+        stateMock.expects('actions').returns(actions);
+      }
+
+    describe('minValue function contracts', () => {
+
 
       it('should provide a minValue function', () => {
         assert.typeOf(minimax.minValue, 'function');
