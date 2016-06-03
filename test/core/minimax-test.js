@@ -19,7 +19,7 @@ describe('minimax', () => {
 
   });
 
-  describe('decider function contracts', () => {
+  describe('decider', () => {
 
     it('should provide a decider function', () => {
       assert.typeOf(new Minimax().decide, 'function');
@@ -68,8 +68,11 @@ describe('minimax', () => {
         stateMock.expects('actions').returns(actions);
       }
 
-    describe('minValue function contracts', () => {
+    describe('minValue', () => {
 
+      beforeEach(() => {
+        minimax.maxValue = function(state) { return state };
+      });
 
       it('should provide a minValue function', () => {
         assert.typeOf(minimax.minValue, 'function');
@@ -82,15 +85,6 @@ describe('minimax', () => {
 
         stateMock.verify();
       });
-
-      function makeActionWithTargetState(state) {
-        const action     = new ActionInterface();
-        const actionMock = sinon.mock(action);
-        actionMock.expects('apply').returns(state);
-
-
-        return actionMock;
-      }
 
       it('should select the minimum of all maximized opponent states', () => {
         minActionMock.expects('apply').returns(minState);
@@ -109,32 +103,36 @@ describe('minimax', () => {
 
     });
 
-    describe('maxValue function contracts', () => {
-
-      var minimax,
-        actionApi,
-        action,
-        actionName,
-
-        state, stateMock;
+    describe('maxValue', () => {
 
       beforeEach(() => {
-        minimax = new Minimax();
-
-        state = new StateInterface();
-
-        stateMock = sinon.mock(state);
-
-        stateMock.expects('actions').returns([]);
-        stateMock.expects('utility').returns(100);
+        minimax.minValue = function(state) { return state };
       });
 
-      it('should return given state as max state since it is not yet implemented', () => {
+      it('should return a terminal action when a terminal state is detected', () => {
+        actionsReturns([]);
+
         expect(minimax.maxValue(state)).to.equal(state);
+
+        stateMock.verify();
+      });
+
+      it('should select the maximum of all minimized opponent states', () => {
+        minActionMock.expects('apply').returns(minState);
+        maxActionMock.expects('apply').returns(maxState);
+
+        actionsReturns([minAction, maxAction]);
+
+        expect(minimax.maxValue(state)).to.equal(maxState);
+
+        minActionMock.verify();
+        maxActionMock.verify();
+        stateMock.verify();
+        minStateMock.verify();
+        maxStateMock.verify();
       });
 
     });
-
   });
 
 
