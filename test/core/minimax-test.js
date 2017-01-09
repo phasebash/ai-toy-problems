@@ -135,8 +135,6 @@ describe('minimax', () => {
     });
   });
 
-
-
   describe('construction', () => {
 
     it('should provide constructor with no arguments', () => {

@@ -1,29 +1,29 @@
 'use strict';
 
 function min() {
-  const actions = Array.prototype.slice.call(arguments);
+  const states = Array.prototype.slice.call(arguments);
 
-  return actions.reduce(function (previous, current) {
+  return states.reduce(function (previous, current) {
     if (current.utility() < previous.utility()) {
       return current;
     }
 
     return previous;
 
-  }, actions[0]);
+  }, states[0]);
 }
 
 function max() {
-  const actions = Array.prototype.slice.call(arguments);
+  const states = Array.prototype.slice.call(arguments);
 
-  return actions.reduce(function (previous, current) {
+  return states.reduce(function (previous, current) {
     if (current.utility() > previous.utility()) {
       return current;
     }
 
     return previous;
 
-  }, actions[0]);
+  }, states[0]);
 }
 
 class Minimax {
@@ -44,15 +44,15 @@ class Minimax {
     }
 
     var i;
-    var v = actions[0].apply();
+    var targetState = actions[0].apply();
 
     for (i = 1; i < length; i++) {
       const next = actions[i].apply();
 
-      v = max(v, this.minValue(next));
+      targetState = max(targetState, this.minValue(next));
     }
 
-    return v;
+    return targetState;
   }
 
   minValue(state) {
@@ -65,15 +65,15 @@ class Minimax {
       return state;
     }
 
-    var v = actions[0].apply();
+    var targetState = actions[0].apply();
 
     for (i = 1; i < length; i++) {
       const next = actions[i].apply();
 
-      v = min(v, this.maxValue(next));
+      targetState = min(targetState, this.maxValue(next));
     }
 
-    return v;
+    return targetState;
   }
 
 }
