@@ -4,6 +4,7 @@
   "description": "A collection of artificial intelligence toy problems solved with simple JavaScriptz.",
   "main": "index.js",
   "scripts": {
+    "testdebug": "node --nolazy --inspect-brk=9229 node_modules/.bin/mocha test/core/*-test.js",    
     "test": "mocha test/core/*-test.js",
     "pretest": "jshint src && jscs src"
   },

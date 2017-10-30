@@ -21,4 +21,8 @@ describe('search', () => {
 
   });
 
+  describe('depth-first search', () => {
+    
+  });
+
 });
